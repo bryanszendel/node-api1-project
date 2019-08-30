@@ -32,7 +32,17 @@ server.get('/api/users/:id', (req, res) => {
     })
 })
 
-
+// POST to create new user
+server.post('/api/users', (req, res) => {
+  const userInfo = req.body
+  users.insert(userInfo)
+    .then(user => {
+      res.status(201).json(user)
+    })
+    .catch(error => {
+      res.status(500).json({ message: 'error adding the new user' })
+    })
+})
 
 
 const port = 7000;
