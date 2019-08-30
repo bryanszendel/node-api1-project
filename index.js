@@ -60,6 +60,24 @@ server.delete('/api/users/:id', (req, res) => {
     })
 })
 
+// PUT to update a specific user
+server.put('/api/users/:id', (req, res) => {
+  const { id } = req.params
+  const changes = req.body
+  users.update(id, changes)
+    .then(updated => {
+      if (!changes.name) {
+        res.status(400).json({ errorMessage: "Please provide name and bio for the user." })
+      } else if (!changes.bio) {
+        res.status(400).json({ errorMessage: "Please provide name and bio for the user." })
+      } else if (updated) {
+        res.status(200).json(updated)
+      } else {
+        res.status(404).json({ message: "The user with the specified ID does not exist" })
+      }
+    })
+})
+
 
 const port = 7000;
 server.listen(port, () => console.log('\n server is running \n'))
